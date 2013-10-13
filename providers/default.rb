@@ -7,6 +7,9 @@
 # Apache License 2.0
 #
 
+require 'chef/mixin/shell_out'
+include Chef::Mixin::ShellOut
+
 def whyrun_supported?
   true
 end
@@ -31,11 +34,11 @@ def setfacl_command
     "setfacl #{@new_resource.recursive ? '-R ' : ''}-m #{acl_string} #{@new_resource.path}"
 end
 
-def acl_string
+def acl_string(for_grep = false)
   if !@new_resource.user.nil?
-    "#{@new_resource.default ? 'd:' : ''}u:#{@new_resource.user}:#{@new_resource.read ? 'r' : '-'}#{@new_resource.write ? 'w' : '-'}#{@new_resource.execute ? 'x' : '-'}"
+    "#{@new_resource.default ? (for_grep ? 'default:' : 'd:') : ''}#{for_grep ? 'user' : 'u'}:#{@new_resource.user}:#{@new_resource.read ? 'r' : '-'}#{@new_resource.write ? 'w' : '-'}#{@new_resource.execute ? 'x' : '-'}"
   elsif !@new_resource.group.nil?
-    "#{@new_resource.default ? 'd:' : ''}g:#{@new_resource.group}:#{@new_resource.read ? 'r' : '-'}#{@new_resource.write ? 'w' : '-'}#{@new_resource.execute ? 'x' : '-'}"
+    "#{@new_resource.default ? (for_grep ? 'default:' : 'd:') : ''}#{for_grep ? 'group' : 'g'}:#{@new_resource.group}:#{@new_resource.read ? 'r' : '-'}#{@new_resource.write ? 'w' : '-'}#{@new_resource.execute ? 'x' : '-'}"
   else
     ""
   end
@@ -51,12 +54,12 @@ def load_current_resource
     @current_resource.read(@new_resource.read)
     @current_resource.write(@new_resource.write)
     @current_resource.execute(@new_resource.execute)
-    begin
-      execute "getfacl #{@current_resource.path} | grep -x #{acl_string}"
-      @current_resource.exists = true
-    rescue
-      # If the execute LWRP get a return value other than 0 (grep did not found the given ACL) then it throws and Exepction
+    return_val = shell_out("getfacl --absolute-names #{@current_resource.path} | grep -x #{acl_string(true)}")
+    if return_val.exitstatus == 1
+      # There were no matches with grep, so the resource does not exists
       @current_resource.exists = false
+    elsif return_val.exitstatus == 0
+      @current_resource.exists = true
     end
   else
     @current_resource.exists = false
