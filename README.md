@@ -28,6 +28,11 @@ acl "/var/lib/foo" do
 end
 ```
 
+TODO
+----
+
+* Make it fully testable (preferably with Test Kitchen and Serverspec)
+
 Contributing
 ------------
 
