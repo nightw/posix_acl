@@ -1,10 +1,11 @@
-acl Cookbook
-============
+posix-acl Cookbook
+==================
 
 POSIX filesystem ACLs LWRPs in a cookbook for Chef
 
 Usage
 -----
+
 #### ACL resource
 
 Important restrictions:
@@ -43,5 +44,7 @@ Contributing
 
 License and Authors
 -------------------
+
 Authors: Pal David Gergely <nightw17@gmail.com>
+
 License: Apache Licence 2.0
