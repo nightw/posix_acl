@@ -19,8 +19,8 @@ This example uses all the possible attributes with the default values:
 
 ```ruby
 posix_acl "/var/lib/foo" do
-  user "john"
-  group nil
+  user 'john'
+  group ''
   read true
   write false
   execute true
