@@ -1,6 +1,10 @@
 posix-acl CHANGELOG
 ===================
 
+0.3.0
+-----
+- Andrew Heald - Added "check" action, renamed cookbook to posix_acl
+
 0.2.0
 -----
 - Andrew Heald - Added Berkfile
