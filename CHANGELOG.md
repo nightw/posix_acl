@@ -1,4 +1,4 @@
-posix-acl CHANGELOG
+posix_acl CHANGELOG
 ===================
 
 0.3.0

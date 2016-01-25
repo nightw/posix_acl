@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: posix-acl
+# Cookbook Name:: posix_acl
 # Recipe:: default
 #
 # Copyright 2013, Pal David Gergely

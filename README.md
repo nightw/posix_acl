@@ -1,4 +1,4 @@
-posix-acl Cookbook
+posix_acl Cookbook
 ==================
 
 POSIX filesystem ACLs LWRPs in a cookbook for Chef
