@@ -29,9 +29,9 @@ end
 def act(message)
   if !Pathname.new(@new_resource.path).exist?
     Chef::Log.warn "Cannot #{message} ACL on '#{@new_resource.path}', because the file or directory does not exist."
-  elsif !@new_resource.user.nil? && !@new_resource.group.nil?
+  elsif !@new_resource.user.to_s.empty? && !@new_resource.group.to_s.empty?
     Chef::Log.warn "Cannot #{message} ACL on '#{@new_resource.path}', because either the user attribute or the group attribute should be set, not both."
-  elsif @new_resource.user.nil? && @new_resource.group.nil?
+  elsif @new_resource.user.to_s.empty? && @new_resource.group.to_s.empty?
     Chef::Log.warn "Cannot #{message} ACL on '#{@new_resource.path}', because the user and the group attributes are both nil."
   elsif @current_resource.exists
     Chef::Log.info "ACL '#{acl_string}' on '#{@new_resource.path}' already set - nothing to do."
@@ -46,9 +46,9 @@ def setfacl_command
 end
 
 def acl_string(for_grep = false)
-  if !@new_resource.user.nil?
+  if !@new_resource.user.to_s.empty?
     "#{@new_resource.default ? (for_grep ? 'default:' : 'd:') : ''}#{for_grep ? 'user' : 'u'}:#{@new_resource.user}:#{@new_resource.read ? 'r' : '-'}#{@new_resource.write ? 'w' : '-'}#{@new_resource.execute ? 'x' : '-'}"
-  elsif !@new_resource.group.nil?
+  elsif !@new_resource.group.to_s.empty?
     "#{@new_resource.default ? (for_grep ? 'default:' : 'd:') : ''}#{for_grep ? 'group' : 'g'}:#{@new_resource.group}:#{@new_resource.read ? 'r' : '-'}#{@new_resource.write ? 'w' : '-'}#{@new_resource.execute ? 'x' : '-'}"
   else
     ""

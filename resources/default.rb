@@ -14,8 +14,8 @@ default_action :create
 
 attribute :path, :name_attribute => true, :kind_of => String, :required => true
 
-attribute :user       , :kind_of => [ String, nil ]
-attribute :group      , :kind_of => [ String, nil ], :default => nil
+attribute :user       , :kind_of => String, :default => ''
+attribute :group      , :kind_of => String, :default => ''
 attribute :read       , :kind_of => [ TrueClass, FalseClass ], :default => true
 attribute :write      , :kind_of => [ TrueClass, FalseClass ], :default => false
 attribute :execute    , :kind_of => [ TrueClass, FalseClass ], :default => true
