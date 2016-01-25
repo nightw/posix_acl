@@ -1,4 +1,4 @@
-posix-acl Cookbook
+posix_acl Cookbook
 ==================
 
 POSIX filesystem ACLs LWRPs in a cookbook for Chef
@@ -18,9 +18,9 @@ Examples
 This example uses all the possible attributes with the default values:
 
 ```ruby
-acl "/var/lib/foo" do
-  user "john"
-  group nil
+posix_acl "/var/lib/foo" do
+  user 'john'
+  group ''
   read true
   write false
   execute true
