@@ -57,7 +57,7 @@ end
 
 def load_current_resource
   if !@new_resource.recursive
-    @current_resource = Chef::Resource::Acl.new(@new_resource.path)
+    @current_resource = Chef::Resource::PosixAcl.new(@new_resource.path)
     @current_resource.path(@new_resource.path)
     @current_resource.user(@new_resource.user)
     @current_resource.group(@new_resource.group)
