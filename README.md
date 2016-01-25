@@ -18,7 +18,7 @@ Examples
 This example uses all the possible attributes with the default values:
 
 ```ruby
-acl "/var/lib/foo" do
+posix_acl "/var/lib/foo" do
   user "john"
   group nil
   read true
