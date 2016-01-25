@@ -9,7 +9,7 @@
 
 require 'pathname'
 
-actions :create
+actions :create, :check
 default_action :create
 
 attribute :path, :name_attribute => true, :kind_of => String, :required => true

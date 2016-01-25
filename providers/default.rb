@@ -15,18 +15,29 @@ def whyrun_supported?
 end
 
 action :create do
-  if !Pathname.new(@new_resource.path).exist?
-    Chef::Log.warn "Cannot create ACL on '#{@new_resource.path}', because the file or directory does not exist."
-  elsif !@new_resource.user.nil? && !@new_resource.group.nil?
-    Chef::Log.warn "Cannot create ACL on '#{@new_resource.path}', because either the user attribute or the group attribute should be set, not both."
-  elsif @new_resource.user.nil? && @new_resource.group.nil?
-    Chef::Log.warn "Cannot create ACL on '#{@new_resource.path}', because the user and the group attributes are both nil."
-  elsif @current_resource.exists
-    Chef::Log.info "ACL '#{acl_string}' on '#{@new_resource.path}' already set - nothing to do."
-  else
+  act('create') do
     converge_by("Create #{@new_resource}") do
       execute setfacl_command
     end
+  end
+end
+
+action :check do
+  act('check') {}
+end
+
+def act(message)
+  if !Pathname.new(@new_resource.path).exist?
+    Chef::Log.warn "Cannot #{message} ACL on '#{@new_resource.path}', because the file or directory does not exist."
+  elsif !@new_resource.user.nil? && !@new_resource.group.nil?
+    Chef::Log.warn "Cannot #{message} ACL on '#{@new_resource.path}', because either the user attribute or the group attribute should be set, not both."
+  elsif @new_resource.user.nil? && @new_resource.group.nil?
+    Chef::Log.warn "Cannot #{message} ACL on '#{@new_resource.path}', because the user and the group attributes are both nil."
+  elsif @current_resource.exists
+    Chef::Log.info "ACL '#{acl_string}' on '#{@new_resource.path}' already set - nothing to do."
+  else
+    yield
+    @new_resource.updated_by_last_action(true)
   end
 end
 
